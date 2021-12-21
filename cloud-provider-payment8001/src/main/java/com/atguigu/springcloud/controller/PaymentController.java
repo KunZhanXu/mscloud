@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @auther zzyy
@@ -70,6 +71,30 @@ public class PaymentController
                     + element.getUri());
         }
         return this.discoveryClient;
+    }
+
+
+    @GetMapping(value="/payment/lb")
+    public String getPaymentLB(){
+        return serverPort;
+    }
+
+    @GetMapping(value = "/payment/feign/timeout")
+    public String paymentFeignTimeOut(){
+        System.out.println("*****paymentFeignTimeOut from port: "+serverPort);
+        //暂停几秒钟线程
+        try{
+            TimeUnit.SECONDS.sleep(3);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return serverPort;
+    }
+
+    @GetMapping("/payment/zipkin")
+    public String paymentZipkin()
+    {
+        return "hi ,i'am paymentzipkin server fall back，welcome to atguigu，O(∩_∩)O哈哈~";
     }
 
 }
